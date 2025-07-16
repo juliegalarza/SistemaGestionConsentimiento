@@ -130,6 +130,7 @@ func construirPoliticaDinamica(idUsuario int) (string, error) {
 // --------------------------
 
 func GuardarDatosPersonales(w http.ResponseWriter, r *http.Request) {
+
 	var input DatosPersonalesInput
 	if err := json.NewDecoder(r.Body).Decode(&input); err != nil {
 		http.Error(w, "Datos inválidos", http.StatusBadRequest)
@@ -233,6 +234,7 @@ func GuardarDatosPersonales(w http.ResponseWriter, r *http.Request) {
 // --------------------------
 
 func ObtenerDatosPersonales(w http.ResponseWriter, r *http.Request) {
+
 	// 1) Leer id_usuario (obligatorio)
 	uid := r.URL.Query().Get("id_usuario")
 	if uid == "" {
@@ -350,6 +352,7 @@ func ObtenerDatosPersonales(w http.ResponseWriter, r *http.Request) {
 }
 
 func ActualizarDatosPersonales(w http.ResponseWriter, r *http.Request) {
+
 	var input DatosPersonalesInput
 	if err := json.NewDecoder(r.Body).Decode(&input); err != nil {
 		http.Error(w, "Datos inválidos", http.StatusBadRequest)

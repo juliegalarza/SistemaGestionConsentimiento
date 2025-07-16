@@ -5,39 +5,44 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
-// Declarar variable global del pool
+// Pool principal (consentimientos)
 var Pool *pgxpool.Pool
 
-// Conexión a la base de datos de datos_personales (manténla aparte si quieres)
-var ConnDatos *pgx.Conn
+// PoolDatos para la BD de datos_personales
+var ConnDatos *pgxpool.Pool
 
+// ConectarDB inicializa el pool contra la BD de consentimientos
 func ConectarDB() {
-	pool, err := pgxpool.New(context.Background(), "postgres://postgres:postgres@localhost:5432/consentimientos?search_path=public")
+	var err error
+	Pool, err = pgxpool.New(context.Background(),
+		"postgres://postgres:postgres@localhost:5432/consentimientos?search_path=public",
+	)
 	if err != nil {
-		log.Fatal("Error creando pool:", err)
+		log.Fatal("Error creando pool de consentimientos:", err)
 	}
 
-	// ASIGNACIÓN AQUÍ:
-	Pool = pool
-
+	// Comprobación rápida
 	var exists bool
-	err = Pool.QueryRow(context.Background(), "SELECT EXISTS (SELECT 1 FROM usuarios_roles)").Scan(&exists)
+	err = Pool.QueryRow(context.Background(),
+		"SELECT EXISTS (SELECT 1 FROM usuarios_roles)",
+	).Scan(&exists)
 	if err != nil {
-		log.Fatal("Error en consulta:", err)
+		log.Fatal("Error comprobando usuarios_roles:", err)
 	}
-
 	fmt.Println("¿usuarios_roles existe?:", exists)
 }
 
+// ConectarDatosPersonales inicializa el pool contra la BD de datos_personales
 func ConectarDatosPersonales() {
 	var err error
-	ConnDatos, err = pgx.Connect(context.Background(), "postgres://postgres:postgres@localhost:5432/datos_personales")
+	ConnDatos, err = pgxpool.New(context.Background(),
+		"postgres://postgres:postgres@localhost:5432/datos_personales",
+	)
 	if err != nil {
-		log.Fatalf("Error al conectar con la base de datos (datos_personales): %v", err)
+		log.Fatal("Error creando pool de datos_personales:", err)
 	}
-	fmt.Println("Conectado a la base de datos (datos_personales)")
+	fmt.Println("Pool datos_personales conectado")
 }

@@ -52,12 +52,15 @@ func main() {
 	ctd := r.PathPrefix("/custodio").Subrouter()
 	ctd.Use(handlers.CustodioOnlyMiddleware)
 
-	// • Notificaciones (controlador)
+	// • Notificaciones
 	ctd.HandleFunc("/notificaciones", handlers.GetNotificaciones).Methods("GET")
 	ctd.HandleFunc("/notificaciones/count", handlers.GetUnreadCount).Methods("GET")
 	ctd.HandleFunc("/notificaciones/{id}/leer", handlers.MarkAsRead).Methods("PUT")
 	ctd.HandleFunc("/accesos", handlers.ObtenerAccesosCustodio).Methods("GET")
 	ctd.HandleFunc("/consentimientos", handlers.ObtenerConsentimientosCustodio).Methods("GET")
+	ctd.HandleFunc("/api/fallos", handlers.ObtenerFallos).Methods("GET")
+	ctd.HandleFunc("/api/dashboard", handlers.ObtenerDashboard).Methods("GET")
+	ctd.HandleFunc("/api/profile", handlers.ObtenerPerfilCustodio).Methods("GET")
 	// — CONTROLADOR (rol = 2) —
 	ctrl := r.PathPrefix("/controlador").Subrouter()
 	ctrl.Use(handlers.ControladorOnlyMiddleware)
@@ -163,6 +166,18 @@ func main() {
 	proc.HandleFunc("/notificaciones", handlers.GetNotificaciones).Methods("GET")
 	proc.HandleFunc("/notificaciones/count", handlers.GetUnreadCount).Methods("GET")
 	proc.HandleFunc("/notificaciones/{id}/leer", handlers.MarkAsRead).Methods("PUT")
+	proc.HandleFunc("/dashboard", handlers.ObtenerDashboardProcesador).Methods("GET")
+	proc.HandleFunc("/politica-atributos", handlers.ObtenerAtributosDePolitica).Methods("GET")
+	proc.HandleFunc("/atributos-datos", handlers.ObtenerAtributosDatos).Methods("GET")
+	// — AUTORIDAD DE PROTECCIÓN DE DATOS (rol = 5) —
+	apd := r.PathPrefix("/apd/api").Subrouter()
+	apd.Use(handlers.AuthorityOnlyMiddleware)
+	apd.HandleFunc("/policies", handlers.ListPolicies).Methods("GET")
+	apd.HandleFunc("/policies/{id}/history", handlers.PolicyHistory).Methods("GET")
+	apd.HandleFunc("/consents", handlers.ListConsents).Methods("GET")
+	apd.HandleFunc("/consents/{id}/history", handlers.ConsentHistory).Methods("GET")
+	apd.HandleFunc("/accesos", handlers.ObtenerAccesosCustodio).Methods("GET")
+	// • Políticas de privacidad con conteo de consentimientos activos
 
 	// 3️⃣ Tareas background
 

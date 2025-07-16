@@ -3,7 +3,6 @@ package handlers
 
 import (
 	"context"
-	"log"
 	"net/http"
 	"strconv"
 
@@ -23,19 +22,15 @@ const (
 func ControladorOnlyMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		idStr := r.Header.Get("X-User-ID")
-		log.Println("Middleware: Header X-User-ID recibido:", idStr)
 		if idStr == "" {
 			http.Error(w, "No se indicó usuario autenticado", http.StatusUnauthorized)
 			return
 		}
 		idUsuario, err := strconv.Atoi(idStr)
 		if err != nil {
-			log.Println("Middleware: ID inválido:", err)
 			http.Error(w, "ID de usuario inválido", http.StatusBadRequest)
 			return
 		}
-
-		log.Println("Middleware: Verificando rol controlador para usuario:", idUsuario)
 
 		var exists int
 		err = db.Pool.QueryRow(
@@ -52,16 +47,12 @@ func ControladorOnlyMiddleware(next http.Handler) http.Handler {
 
 		if err != nil {
 			if err.Error() == "no rows in result set" {
-				log.Println("Middleware: Acceso denegado, no tiene rol controlador")
 				http.Error(w, "Acceso denegado: se requiere rol de Controlador", http.StatusForbidden)
 				return
 			}
-			log.Println("Middleware: Error en consulta SQL:", err)
 			http.Error(w, "Error interno al verificar rol", http.StatusInternalServerError)
 			return
 		}
-
-		log.Println("Middleware: Acceso autorizado para usuario", idUsuario)
 		ctx := context.WithValue(r.Context(), CtxUserIDKey, idUsuario)
 		next.ServeHTTP(w, r.WithContext(ctx))
 	})

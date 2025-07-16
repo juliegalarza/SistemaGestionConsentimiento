@@ -3,6 +3,7 @@ package handlers
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"time"
 
@@ -242,7 +243,7 @@ func CrearSolicitudModificacion(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
-// Estructura para recibir estado actualizado
+// ActualizarSolicitudInput es la estructura que recibimos en el body
 type ActualizarSolicitudInput struct {
 	Estado string `json:"estado"` // 'aprobado' o 'denegado'
 }
@@ -250,87 +251,94 @@ type ActualizarSolicitudInput struct {
 // PUT /controlador/solicitudes-atributo/{id}
 // PUT /controlador/solicitudes-atributo/{id}
 func ActualizarEstadoSolicitudAtributo(w http.ResponseWriter, r *http.Request) {
+	// 1️⃣ Leer ID de la ruta
 	vars := mux.Vars(r)
 	idStr := vars["id"]
 	idSolicitud, err := strconv.Atoi(idStr)
 	if err != nil {
-		http.Error(w, "ID inválido", http.StatusBadRequest)
+		http.Error(w, "ID de solicitud inválido", http.StatusBadRequest)
 		return
 	}
 
-	var input ActualizarSolicitudInput
+	// 2️⃣ Decodificar body
+	var input struct {
+		Estado string `json:"estado"` // "aprobado" o "denegado"
+	}
 	if err := json.NewDecoder(r.Body).Decode(&input); err != nil {
 		http.Error(w, "JSON inválido: "+err.Error(), http.StatusBadRequest)
 		return
 	}
-
 	if input.Estado != "aprobado" && input.Estado != "denegado" {
-		http.Error(w, "Estado inválido. Debe ser 'aprobado' o 'denegado'", http.StatusBadRequest)
+		http.Error(w, "Estado debe ser 'aprobado' o 'denegado'", http.StatusBadRequest)
 		return
 	}
 
-	// Obtener datos de la solicitud
-	var tipo string
-	var atributo *string
-	var idProcesador int
+	// 3️⃣ Obtener datos previos de la solicitud
+	var (
+		tipo         string
+		atributo     *string
+		idProcesador int
+	)
 	err = db.Pool.QueryRow(r.Context(), `
-		SELECT tipo_solicitud, atributo, id_procesador
-		FROM solicitudes_atributo
-		WHERE id_solicitud = $1
-	`, idSolicitud).Scan(&tipo, &atributo, &idProcesador)
+        SELECT tipo_solicitud, atributo, id_procesador
+          FROM solicitudes_atributo
+         WHERE id_solicitud = $1
+    `, idSolicitud).Scan(&tipo, &atributo, &idProcesador)
 	if err != nil {
-		http.Error(w, "Error consultando solicitud: "+err.Error(), http.StatusInternalServerError)
+		http.Error(w, "Solicitud no encontrada: "+err.Error(), http.StatusNotFound)
 		return
 	}
 
-	// Actualizar estado
+	// 4️⃣ Actualizar el estado en la base
 	_, err = db.Pool.Exec(r.Context(), `
-		UPDATE solicitudes_atributo
-		SET estado = $1
-		WHERE id_solicitud = $2;
-	`, input.Estado, idSolicitud)
+        UPDATE solicitudes_atributo
+           SET estado = $1
+         WHERE id_solicitud = $2
+    `, input.Estado, idSolicitud)
 	if err != nil {
 		http.Error(w, "Error actualizando estado: "+err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	// Si es una solicitud 'nuevo' y fue aprobada, agregar el atributo a atributos_terceros
+	// 5️⃣ Si era NUEVO y se APRUEBA, agregar atributo
 	if tipo == "nuevo" && input.Estado == "aprobado" && atributo != nil {
-		// Verificar si ya tiene una entrada en atributos_terceros
-		var atributosJSON []string
+		// Intentar leer fila existente
+		var actuales []string
 		err := db.Pool.QueryRow(r.Context(), `
-			SELECT atributos
-			FROM atributos_terceros
-			WHERE id_usuario = $1
-		`, idProcesador).Scan(&atributosJSON)
+            SELECT atributos
+              FROM atributos_terceros
+             WHERE id_usuario = $1
+        `, idProcesador).Scan(&actuales)
 
 		if err == nil {
-			// Ya existe, agregar si no está
+			// Ya existe: añadir si no está
 			existe := false
-			for _, a := range atributosJSON {
+			for _, a := range actuales {
 				if a == *atributo {
 					existe = true
 					break
 				}
 			}
 			if !existe {
-				atributosJSON = append(atributosJSON, *atributo)
-				_, err := db.Pool.Exec(r.Context(), `
-					UPDATE atributos_terceros
-					SET atributos = $1
-					WHERE id_usuario = $2
-				`, atributosJSON, idProcesador)
+				actuales = append(actuales, *atributo)
+				_, err = db.Pool.Exec(r.Context(), `
+                    UPDATE atributos_terceros
+                       SET atributos = $1,
+                           fecha_asignacion = $2
+                     WHERE id_usuario = $3
+                `, actuales, time.Now(), idProcesador)
 				if err != nil {
 					http.Error(w, "Error actualizando atributos: "+err.Error(), http.StatusInternalServerError)
 					return
 				}
 			}
 		} else {
-			// No existe, insertar nueva fila
-			_, err := db.Pool.Exec(r.Context(), `
-				INSERT INTO atributos_terceros (id_usuario, atributos, asignado_por, fecha_asignacion)
-				VALUES ($1, $2, $3, $4)
-			`, idProcesador, []string{*atributo}, 1, time.Now())
+			// No existía: insertar nueva fila
+			_, err = db.Pool.Exec(r.Context(), `
+                INSERT INTO atributos_terceros
+                  (id_usuario, atributos, asignado_por, fecha_asignacion)
+                VALUES ($1, $2, $3, $4)
+            `, idProcesador, []string{*atributo} /* asignado_por= */, 1, time.Now())
 			if err != nil {
 				http.Error(w, "Error insertando atributos: "+err.Error(), http.StatusInternalServerError)
 				return
@@ -338,6 +346,19 @@ func ActualizarEstadoSolicitudAtributo(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
+	// 6️⃣ Enviar notificación al procesador con el resultado
+	msg := fmt.Sprintf("Tu solicitud #%d ha sido %s.", idSolicitud, input.Estado)
+	notif := &models.Notificacion{
+		UsuarioID:       idProcesador,
+		Tipo:            "resultado_solicitud",
+		ReferenciaTabla: "solicitudes_atributo",
+		ReferenciaID:    idSolicitud,
+		Mensaje:         msg,
+		URLRecurso:      ptrString("/procesador/solicitudes"),
+	}
+	_ = CrearNotificacion(r.Context(), notif) // ignorar error aquí
+
+	// 7️⃣ Responder sin contenido
 	w.WriteHeader(http.StatusNoContent)
 }
 

@@ -3,7 +3,6 @@ package handlers
 
 import (
 	"encoding/json"
-	"log"
 	"net/http"
 	"strconv"
 	"time"
@@ -70,7 +69,6 @@ func CrearUsuarioRol(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Datos inválidos", http.StatusBadRequest)
 		return
 	}
-	log.Printf("CrearUsuarioRol payload: %+v\n", input)
 
 	_, err := db.Pool.Exec(r.Context(), `
 		INSERT INTO usuarios_roles (id_usuario, id_rol, fecha_asignacion)
@@ -81,7 +79,6 @@ func CrearUsuarioRol(w http.ResponseWriter, r *http.Request) {
 		        fecha_asignacion = EXCLUDED.fecha_asignacion
 	`, input.IDUsuario, input.IDRol, time.Now())
 	if err != nil {
-		log.Printf("CrearUsuarioRol ERROR insert: %v\n", err)
 		http.Error(w, "Error al asignar rol", http.StatusInternalServerError)
 		return
 	}
@@ -270,7 +267,6 @@ func ObtenerUsuariosAsignables(w http.ResponseWriter, r *http.Request) {
 			&x.IDRolActual,
 			&x.FechaAsignacion,
 		); err != nil {
-			log.Println("Scan asignables:", err)
 			continue
 		}
 		// Rellenar Estado según tenga rol o no

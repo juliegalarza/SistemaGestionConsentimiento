@@ -3,6 +3,8 @@ package handlers
 
 import (
 	"encoding/json"
+	"fmt"
+	"log"
 	"net/http"
 	"strconv"
 	"time"
@@ -14,6 +16,11 @@ import (
 
 // GET /procesador/acceso-datos?id_usuario=NN
 func ObtenerAccesoDatos(w http.ResponseWriter, r *http.Request) {
+	start := time.Now()
+	defer func() {
+		log.Printf("ObtenerAccesoDatos duró %s\n", time.Since(start))
+	}()
+
 	ctx := r.Context()
 
 	// 1️⃣ Leer id_usuario (titular)
@@ -128,8 +135,14 @@ func ObtenerAccesoDatos(w http.ResponseWriter, r *http.Request) {
 			&dp.EstadoCivil,
 		)
 	if err != nil {
-		LogAcceso(ctx, idSolicitante, idConsentimiento, false, "datos personales no encontrados")
-		http.Error(w, "Datos personales no encontrados", http.StatusNotFound)
+		// ➊ Log completo del error
+		log.Printf("ERROR en QueryRow datos_personales (titular=%d): %v", idTitular, err)
+
+		// ➋ Registrar en la tabla de accesos igualmente
+		LogAcceso(ctx, idSolicitante, idConsentimiento, false, fmt.Sprintf("error datos_personales: %v", err))
+
+		// ➌ Devolver mensaje y status adecuados
+		http.Error(w, fmt.Sprintf("Error al recuperar datos personales: %v", err), http.StatusInternalServerError)
 		return
 	}
 

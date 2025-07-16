@@ -25,6 +25,7 @@ type ConsentimientoInput struct {
 }
 
 // GuardarConsentimiento crea un nuevo consentimiento (o historial si ya hubo uno) y notifica.
+// GuardarConsentimiento crea un nuevo consentimiento (o historial si ya hubo uno) y notifica.
 func GuardarConsentimiento(w http.ResponseWriter, r *http.Request) {
 	var in ConsentimientoInput
 	if err := json.NewDecoder(r.Body).Decode(&in); err != nil {
@@ -48,6 +49,13 @@ func GuardarConsentimiento(w http.ResponseWriter, r *http.Request) {
 	// 2) Si es activación, validar expiración
 	if in.Estado == "activo" {
 		if in.FechaExpiracion == nil || in.FechaExpiracion.After(finPol) {
+			errMsg := fmt.Sprintf("Fecha_expiracion excede fecha_fin para politica=%d", in.IDPolitica)
+			db.Pool.Exec(ctx, `
+				INSERT INTO auditoria_eventos
+				  (id_usuario, accion, tabla_afectada, descripcion, fecha_evento, exito, error_mensaje)
+				VALUES ($1, 'FALLO-INSERT', 'consentimientos', $2, NOW(), false, $3)
+			`, in.IDUsuario, errMsg, errMsg)
+
 			http.Error(w,
 				"La fecha de expiración no puede exceder la vigencia de la política",
 				http.StatusBadRequest,
@@ -81,7 +89,6 @@ func GuardarConsentimiento(w http.ResponseWriter, r *http.Request) {
 				http.StatusConflict,
 			)
 			return
-
 		case "no_aceptado":
 			if in.Estado == "no_aceptado" {
 				if _, err := db.Pool.Exec(ctx, `
@@ -94,7 +101,6 @@ func GuardarConsentimiento(w http.ResponseWriter, r *http.Request) {
 					http.Error(w, "Error actualizando rechazo", http.StatusInternalServerError)
 					return
 				}
-				// Notificar rechazo
 				url := "/titular/politicas"
 				notif := &models.Notificacion{
 					UsuarioID:       in.IDUsuario,
@@ -111,7 +117,6 @@ func GuardarConsentimiento(w http.ResponseWriter, r *http.Request) {
 				json.NewEncoder(w).Encode(map[string]string{"mensaje": "Política rechazada correctamente"})
 				return
 			}
-			// si viene con "activo" caemos al INSERT para mantener historial
 		}
 	}
 
@@ -124,11 +129,16 @@ func GuardarConsentimiento(w http.ResponseWriter, r *http.Request) {
         RETURNING id_consentimiento
     `, in.IDUsuario, in.IDPolitica, now, in.FechaExpiracion, in.Estado).Scan(&nuevoID)
 	if err != nil {
+		db.Pool.Exec(ctx, `
+			INSERT INTO auditoria_eventos
+			  (id_usuario, accion, tabla_afectada, descripcion, fecha_evento, exito, error_mensaje)
+			VALUES ($1, 'FALLO-INSERT', 'consentimientos', $2, NOW(), false, $3)
+		`, in.IDUsuario, err.Error(), err.Error())
+
 		http.Error(w, "Error guardando consentimiento: "+err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	// 6) Notificar nueva aceptación
 	url2 := "/titular/consentimientos"
 	notif2 := &models.Notificacion{
 		UsuarioID:       in.IDUsuario,
@@ -144,6 +154,66 @@ func GuardarConsentimiento(w http.ResponseWriter, r *http.Request) {
 
 	w.WriteHeader(http.StatusCreated)
 	json.NewEncoder(w).Encode(map[string]string{"mensaje": "Consentimiento registrado correctamente"})
+}
+
+// RechazarConsentimiento maneja el “No Aceptar” desde la UI.
+func RechazarConsentimiento(w http.ResponseWriter, r *http.Request) {
+	var in struct {
+		IDUsuario  int `json:"id_usuario"`
+		IDPolitica int `json:"id_politica"`
+	}
+	if err := json.NewDecoder(r.Body).Decode(&in); err != nil {
+		http.Error(w, "Datos inválidos", http.StatusBadRequest)
+		return
+	}
+	ctx := r.Context()
+	now := time.Now()
+
+	// 1) Actualizar estado
+	res, err := db.Pool.Exec(ctx, `
+        UPDATE consentimientos
+           SET estado = 'no_aceptado',
+               fecha_otorgado   = $1,
+               fecha_expiracion = NULL
+         WHERE id_usuario  = $2
+           AND id_politica = $3
+           AND estado      <> 'no_aceptado'
+    `, now, in.IDUsuario, in.IDPolitica)
+	if err != nil {
+		http.Error(w, "Error actualizando rechazo", http.StatusInternalServerError)
+		return
+	}
+	if rows := res.RowsAffected(); rows == 0 {
+		http.Error(w, "No hay consentimiento previo para rechazar", http.StatusBadRequest)
+		return
+	}
+
+	// 2) Obtener título
+	var titulo string
+	if err := db.Pool.QueryRow(ctx,
+		"SELECT titulo FROM politicas_privacidad WHERE id_politica=$1",
+		in.IDPolitica,
+	).Scan(&titulo); err != nil {
+		titulo = "(desconocida)"
+	}
+
+	// 3) Notificar al titular
+	url := "/titular/politicas"
+	msg := fmt.Sprintf("Has rechazado la política '%s'.", titulo)
+	notif := &models.Notificacion{
+		UsuarioID:       in.IDUsuario,
+		Tipo:            "rechazo_consentimiento",
+		ReferenciaTabla: "consentimientos",
+		ReferenciaID:    in.IDPolitica,
+		Mensaje:         msg,
+		URLRecurso:      &url,
+	}
+	if err := CrearNotificacion(ctx, notif); err != nil {
+		log.Printf("Error notificando rechazo: %v", err)
+	}
+
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(map[string]string{"mensaje": "Política rechazada correctamente"})
 }
 
 // ObtenerConsentimientosPorUsuario devuelve todos los consentimientos de un usuario,
@@ -174,6 +244,13 @@ func ObtenerConsentimientosPorUsuario(w http.ResponseWriter, r *http.Request) {
          ORDER BY c.id_politica, c.fecha_otorgado DESC
     `, idUsr)
 	if err != nil {
+		errMsg := fmt.Sprintf("Error consultando consentimientos: %v", err)
+		db.Pool.Exec(context.Background(), `
+			INSERT INTO auditoria_eventos
+			  (id_usuario, accion, tabla_afectada, descripcion, fecha_evento, exito, error_mensaje)
+			VALUES ($1, 'FALLO-QUERY', 'consentimientos', $2, NOW(), false, $3)
+		`, idUsr, errMsg, errMsg)
+
 		http.Error(w, "Error consultando consentimientos", http.StatusInternalServerError)
 		return
 	}
@@ -342,8 +419,9 @@ func RevocarConsentimiento(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
-// EliminarConsentimiento borra un consentimiento por su ID.
+// EliminarConsentimiento borra un consentimiento por su ID y notifica.
 func EliminarConsentimiento(w http.ResponseWriter, r *http.Request) {
+	// 1) Leer parámetro
 	q := r.URL.Query().Get("id_consentimiento")
 	if q == "" {
 		http.Error(w, "Falta id_consentimiento", http.StatusBadRequest)
@@ -354,11 +432,83 @@ func EliminarConsentimiento(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "id_consentimiento inválido", http.StatusBadRequest)
 		return
 	}
-	if _, err := db.Pool.Exec(context.Background(),
+
+	ctx := r.Context()
+	// 2) Obtener datos previos para notificar
+	var idUsr, idPol sql.NullInt64
+	var estadoPrevio string
+	var fechaExp sql.NullTime
+	err = db.Pool.QueryRow(ctx, `
+        SELECT id_usuario, id_politica, estado, fecha_expiracion
+          FROM consentimientos
+         WHERE id_consentimiento=$1
+    `, cid).Scan(&idUsr, &idPol, &estadoPrevio, &fechaExp)
+	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			http.Error(w, "Consentimiento no encontrado", http.StatusNotFound)
+		} else {
+			http.Error(w, "Error consultando consentimiento", http.StatusInternalServerError)
+		}
+		return
+	}
+
+	// 3) Ejecutar DELETE (el trigger maneja auditoría)
+	if _, err := db.Pool.Exec(ctx,
 		`DELETE FROM consentimientos WHERE id_consentimiento = $1`, cid); err != nil {
 		http.Error(w, "Error eliminando consentimiento", http.StatusInternalServerError)
 		return
 	}
+
+	// 4) Notificar al titular
+	if idUsr.Valid {
+		url := "/titular/consentimientos"
+		msg := fmt.Sprintf(
+			"Se ha eliminado tu consentimiento (id=%d) para política %d (estado previo=%s, expiración previa=%s).",
+			cid, idPol.Int64, estadoPrevio,
+			func() string {
+				if fechaExp.Valid {
+					return fechaExp.Time.Format("2006-01-02")
+				}
+				return "N/A"
+			}(),
+		)
+		notif := &models.Notificacion{
+			UsuarioID:       int(idUsr.Int64),
+			Tipo:            "eliminar_consentimiento",
+			ReferenciaTabla: "consentimientos",
+			ReferenciaID:    cid,
+			Mensaje:         msg,
+			URLRecurso:      &url,
+		}
+		if err := CrearNotificacion(ctx, notif); err != nil {
+			log.Printf("Error notificando eliminación al titular: %v", err)
+		}
+	}
+
+	// 5) Notificar al controlador (rol=2)
+	var idCtrl int
+	if err := db.Pool.QueryRow(ctx,
+		"SELECT id_usuario FROM usuarios_roles WHERE id_rol=2 LIMIT 1",
+	).Scan(&idCtrl); err == nil {
+		url := "/controlador/monitoreo-consentimientos"
+		msg := fmt.Sprintf(
+			"Se eliminó el consentimiento id=%d para usuario %d (estado previo=%s).",
+			cid, idUsr.Int64, estadoPrevio,
+		)
+		notif := &models.Notificacion{
+			UsuarioID:       idCtrl,
+			Tipo:            "eliminar_consentimiento",
+			ReferenciaTabla: "consentimientos",
+			ReferenciaID:    cid,
+			Mensaje:         msg,
+			URLRecurso:      &url,
+		}
+		if err := CrearNotificacion(ctx, notif); err != nil {
+			log.Printf("Error notificando eliminación al controlador: %v", err)
+		}
+	}
+
+	// 6) Responder OK
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(map[string]string{"mensaje": "Consentimiento eliminado correctamente"})
 }

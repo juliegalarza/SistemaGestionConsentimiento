@@ -1,0 +1,1148 @@
+{
+	"Golang errors": {},
+	"Issues": [
+		{
+			"severity": "MEDIUM",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "676",
+				"url": "https://cwe.mitre.org/data/definitions/676.html"
+			},
+			"rule_id": "G114",
+			"details": "Use of net/http serve function that has no support for setting timeouts",
+			"file": "C:\\Users\\julie\\Downloads\\SistemaGestionConsentimiento\\backend\\main.go",
+			"code": "250: \tlog.Println(\"Servidor corriendo en http://localhost:3000\")\n251: \tlog.Fatal(http.ListenAndServe(\":3000\", habilitarCORS(r)))\n252: }\n",
+			"line": "251",
+			"column": "12",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "MEDIUM",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "22",
+				"url": "https://cwe.mitre.org/data/definitions/22.html"
+			},
+			"rule_id": "G304",
+			"details": "Potential file inclusion via variable",
+			"file": "C:\\Users\\julie\\Downloads\\SistemaGestionConsentimiento\\backend\\utils\\abe_utils.go",
+			"code": "81: func cargarArchivoGob(nombre string) (interface{}, error) {\n82: \tdata, err := os.ReadFile(nombre)\n83: \tif err != nil {\n",
+			"line": "82",
+			"column": "15",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "LOW",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "703",
+				"url": "https://cwe.mitre.org/data/definitions/703.html"
+			},
+			"rule_id": "G104",
+			"details": "Errors unhandled",
+			"file": "C:\\Users\\julie\\Downloads\\SistemaGestionConsentimiento\\backend\\handlers\\solicitud_atributo.go",
+			"code": "428: \n429: \tjson.NewEncoder(w).Encode(s)\n430: }\n",
+			"line": "429",
+			"column": "2",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "LOW",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "703",
+				"url": "https://cwe.mitre.org/data/definitions/703.html"
+			},
+			"rule_id": "G104",
+			"details": "Errors unhandled",
+			"file": "C:\\Users\\julie\\Downloads\\SistemaGestionConsentimiento\\backend\\handlers\\solicitud_atributo.go",
+			"code": "394: \tw.Header().Set(\"Content-Type\", \"application/json\")\n395: \tjson.NewEncoder(w).Encode(atributos)\n396: }\n",
+			"line": "395",
+			"column": "2",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "LOW",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "703",
+				"url": "https://cwe.mitre.org/data/definitions/703.html"
+			},
+			"rule_id": "G104",
+			"details": "Errors unhandled",
+			"file": "C:\\Users\\julie\\Downloads\\SistemaGestionConsentimiento\\backend\\handlers\\solicitud_atributo.go",
+			"code": "238: \tw.Header().Set(\"Content-Type\", \"application/json\")\n239: \tjson.NewEncoder(w).Encode(map[string]interface{}{\n240: \t\t\"mensaje\":      \"Solicitud de modificación enviada correctamente\",\n241: \t\t\"id_solicitud\": idSolicitud,\n242: \t\t\"estado\":       \"pendiente\",\n243: \t})\n244: }\n",
+			"line": "239-243",
+			"column": "2",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "LOW",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "703",
+				"url": "https://cwe.mitre.org/data/definitions/703.html"
+			},
+			"rule_id": "G104",
+			"details": "Errors unhandled",
+			"file": "C:\\Users\\julie\\Downloads\\SistemaGestionConsentimiento\\backend\\handlers\\solicitud_atributo.go",
+			"code": "154: \tw.Header().Set(\"Content-Type\", \"application/json\")\n155: \tjson.NewEncoder(w).Encode(solicitudes)\n156: }\n",
+			"line": "155",
+			"column": "2",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "LOW",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "703",
+				"url": "https://cwe.mitre.org/data/definitions/703.html"
+			},
+			"rule_id": "G104",
+			"details": "Errors unhandled",
+			"file": "C:\\Users\\julie\\Downloads\\SistemaGestionConsentimiento\\backend\\handlers\\solicitud_atributo.go",
+			"code": "110: \tw.Header().Set(\"Content-Type\", \"application/json\")\n111: \tjson.NewEncoder(w).Encode(map[string]interface{}{\n112: \t\t\"mensaje\":      \"Solicitud enviada correctamente\",\n113: \t\t\"id_solicitud\": idSolicitud,\n114: \t\t\"estado\":       \"pendiente\",\n115: \t})\n116: }\n",
+			"line": "111-115",
+			"column": "2",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "LOW",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "703",
+				"url": "https://cwe.mitre.org/data/definitions/703.html"
+			},
+			"rule_id": "G104",
+			"details": "Errors unhandled",
+			"file": "C:\\Users\\julie\\Downloads\\SistemaGestionConsentimiento\\backend\\handlers\\profile.go",
+			"code": "66: \tw.Header().Set(\"Content-Type\", \"application/json\")\n67: \tjson.NewEncoder(w).Encode(p)\n68: }\n",
+			"line": "67",
+			"column": "2",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "LOW",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "703",
+				"url": "https://cwe.mitre.org/data/definitions/703.html"
+			},
+			"rule_id": "G104",
+			"details": "Errors unhandled",
+			"file": "C:\\Users\\julie\\Downloads\\SistemaGestionConsentimiento\\backend\\handlers\\politicas_procesador.go",
+			"code": "166: \tw.Header().Set(\"Content-Type\", \"application/json\")\n167: \tjson.NewEncoder(w).Encode(politicas)\n168: }\n",
+			"line": "167",
+			"column": "2",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "LOW",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "703",
+				"url": "https://cwe.mitre.org/data/definitions/703.html"
+			},
+			"rule_id": "G104",
+			"details": "Errors unhandled",
+			"file": "C:\\Users\\julie\\Downloads\\SistemaGestionConsentimiento\\backend\\handlers\\politicas_procesador.go",
+			"code": "141: \tw.Header().Set(\"Content-Type\", \"application/json\")\n142: \tjson.NewEncoder(w).Encode(politicas)\n143: }\n",
+			"line": "142",
+			"column": "2",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "LOW",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "703",
+				"url": "https://cwe.mitre.org/data/definitions/703.html"
+			},
+			"rule_id": "G104",
+			"details": "Errors unhandled",
+			"file": "C:\\Users\\julie\\Downloads\\SistemaGestionConsentimiento\\backend\\handlers\\politicas_privacidad.go",
+			"code": "405: \tw.WriteHeader(http.StatusOK)\n406: \tjson.NewEncoder(w).Encode(map[string]string{\"mensaje\": \"Política eliminada correctamente\"})\n407: }\n",
+			"line": "406",
+			"column": "2",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "LOW",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "703",
+				"url": "https://cwe.mitre.org/data/definitions/703.html"
+			},
+			"rule_id": "G104",
+			"details": "Errors unhandled",
+			"file": "C:\\Users\\julie\\Downloads\\SistemaGestionConsentimiento\\backend\\handlers\\politicas_privacidad.go",
+			"code": "361: \tw.WriteHeader(http.StatusOK)\n362: \tjson.NewEncoder(w).Encode(map[string]string{\"mensaje\": \"Política actualizada correctamente\"})\n363: }\n",
+			"line": "362",
+			"column": "2",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "LOW",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "703",
+				"url": "https://cwe.mitre.org/data/definitions/703.html"
+			},
+			"rule_id": "G104",
+			"details": "Errors unhandled",
+			"file": "C:\\Users\\julie\\Downloads\\SistemaGestionConsentimiento\\backend\\handlers\\politicas_privacidad.go",
+			"code": "312: \tw.WriteHeader(http.StatusCreated)\n313: \tjson.NewEncoder(w).Encode(map[string]string{\"mensaje\": \"Política creada correctamente\"})\n314: }\n",
+			"line": "313",
+			"column": "2",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "LOW",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "703",
+				"url": "https://cwe.mitre.org/data/definitions/703.html"
+			},
+			"rule_id": "G104",
+			"details": "Errors unhandled",
+			"file": "C:\\Users\\julie\\Downloads\\SistemaGestionConsentimiento\\backend\\handlers\\politicas_privacidad.go",
+			"code": "274: \tw.Header().Set(\"Content-Type\", \"application/json\")\n275: \tjson.NewEncoder(w).Encode(p)\n276: }\n",
+			"line": "275",
+			"column": "2",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "LOW",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "703",
+				"url": "https://cwe.mitre.org/data/definitions/703.html"
+			},
+			"rule_id": "G104",
+			"details": "Errors unhandled",
+			"file": "C:\\Users\\julie\\Downloads\\SistemaGestionConsentimiento\\backend\\handlers\\politicas_privacidad.go",
+			"code": "234: \tw.Header().Set(\"Content-Type\", \"application/json\")\n235: \tjson.NewEncoder(w).Encode(lista)\n236: }\n",
+			"line": "235",
+			"column": "2",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "LOW",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "703",
+				"url": "https://cwe.mitre.org/data/definitions/703.html"
+			},
+			"rule_id": "G104",
+			"details": "Errors unhandled",
+			"file": "C:\\Users\\julie\\Downloads\\SistemaGestionConsentimiento\\backend\\handlers\\politicas_controlador.go",
+			"code": "414: \tw.Header().Set(\"Content-Type\", \"application/json\")\n415: \tjson.NewEncoder(w).Encode(map[string]string{\"mensaje\": \"Política eliminada correctamente\"})\n416: }\n",
+			"line": "415",
+			"column": "2",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "LOW",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "703",
+				"url": "https://cwe.mitre.org/data/definitions/703.html"
+			},
+			"rule_id": "G104",
+			"details": "Errors unhandled",
+			"file": "C:\\Users\\julie\\Downloads\\SistemaGestionConsentimiento\\backend\\handlers\\politicas_controlador.go",
+			"code": "346: \t\t\t// Notificar a los procesadores que tengan ese atributo\n347: \t\t\tnotificarProcesadores(idPolitica, idConsent, titulo)\n348: \t\t} else if today.After(fechaExp) {\n",
+			"line": "347",
+			"column": "4",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "LOW",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "703",
+				"url": "https://cwe.mitre.org/data/definitions/703.html"
+			},
+			"rule_id": "G104",
+			"details": "Errors unhandled",
+			"file": "C:\\Users\\julie\\Downloads\\SistemaGestionConsentimiento\\backend\\handlers\\politicas_controlador.go",
+			"code": "311: \tw.Header().Set(\"Content-Type\", \"application/json\")\n312: \tjson.NewEncoder(w).Encode(lista)\n313: }\n",
+			"line": "312",
+			"column": "2",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "LOW",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "703",
+				"url": "https://cwe.mitre.org/data/definitions/703.html"
+			},
+			"rule_id": "G104",
+			"details": "Errors unhandled",
+			"file": "C:\\Users\\julie\\Downloads\\SistemaGestionConsentimiento\\backend\\handlers\\politicas_controlador.go",
+			"code": "277: \tw.Header().Set(\"Content-Type\", \"application/json\")\n278: \tjson.NewEncoder(w).Encode(p)\n279: }\n",
+			"line": "278",
+			"column": "2",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "LOW",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "703",
+				"url": "https://cwe.mitre.org/data/definitions/703.html"
+			},
+			"rule_id": "G104",
+			"details": "Errors unhandled",
+			"file": "C:\\Users\\julie\\Downloads\\SistemaGestionConsentimiento\\backend\\handlers\\politicas_controlador.go",
+			"code": "247: \tw.Header().Set(\"Content-Type\", \"application/json\")\n248: \tjson.NewEncoder(w).Encode(atributos)\n249: }\n",
+			"line": "248",
+			"column": "2",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "LOW",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "703",
+				"url": "https://cwe.mitre.org/data/definitions/703.html"
+			},
+			"rule_id": "G104",
+			"details": "Errors unhandled",
+			"file": "C:\\Users\\julie\\Downloads\\SistemaGestionConsentimiento\\backend\\handlers\\politicas_controlador.go",
+			"code": "218: \tw.Header().Set(\"Content-Type\", \"application/json\")\n219: \tjson.NewEncoder(w).Encode(map[string]string{\"mensaje\": \"Política actualizada correctamente\"})\n220: }\n",
+			"line": "219",
+			"column": "2",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "LOW",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "703",
+				"url": "https://cwe.mitre.org/data/definitions/703.html"
+			},
+			"rule_id": "G104",
+			"details": "Errors unhandled",
+			"file": "C:\\Users\\julie\\Downloads\\SistemaGestionConsentimiento\\backend\\handlers\\politicas_controlador.go",
+			"code": "148: \tw.Header().Set(\"Content-Type\", \"application/json\")\n149: \tjson.NewEncoder(w).Encode(map[string]interface{}{\n150: \t\t\"mensaje\":     \"Política creada correctamente\",\n151: \t\t\"id_politica\": idPol,\n152: \t})\n153: }\n",
+			"line": "149-152",
+			"column": "2",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "LOW",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "703",
+				"url": "https://cwe.mitre.org/data/definitions/703.html"
+			},
+			"rule_id": "G104",
+			"details": "Errors unhandled",
+			"file": "C:\\Users\\julie\\Downloads\\SistemaGestionConsentimiento\\backend\\handlers\\politicas_controlador.go",
+			"code": "92: \tw.Header().Set(\"Content-Type\", \"application/json\")\n93: \tjson.NewEncoder(w).Encode(resultados)\n94: }\n",
+			"line": "93",
+			"column": "2",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "LOW",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "703",
+				"url": "https://cwe.mitre.org/data/definitions/703.html"
+			},
+			"rule_id": "G104",
+			"details": "Errors unhandled",
+			"file": "C:\\Users\\julie\\Downloads\\SistemaGestionConsentimiento\\backend\\handlers\\politicas_controlador.go",
+			"code": "64: \tw.Header().Set(\"Content-Type\", \"application/json\")\n65: \tjson.NewEncoder(w).Encode(lista)\n66: }\n",
+			"line": "65",
+			"column": "2",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "LOW",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "703",
+				"url": "https://cwe.mitre.org/data/definitions/703.html"
+			},
+			"rule_id": "G104",
+			"details": "Errors unhandled",
+			"file": "C:\\Users\\julie\\Downloads\\SistemaGestionConsentimiento\\backend\\handlers\\notifications.go",
+			"code": "204: \tw.Header().Set(\"Content-Type\", \"application/json\")\n205: \tjson.NewEncoder(w).Encode(map[string]interface{}{\n206: \t\t\"mensaje\":      \"Solicitud enviada correctamente\",\n207: \t\t\"id_solicitud\": idSolicitud,\n208: \t\t\"estado\":       \"pendiente\",\n209: \t})\n210: }\n",
+			"line": "205-209",
+			"column": "2",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "LOW",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "703",
+				"url": "https://cwe.mitre.org/data/definitions/703.html"
+			},
+			"rule_id": "G104",
+			"details": "Errors unhandled",
+			"file": "C:\\Users\\julie\\Downloads\\SistemaGestionConsentimiento\\backend\\handlers\\notifications.go",
+			"code": "88: \tw.Header().Set(\"Content-Type\", \"application/json\")\n89: \tjson.NewEncoder(w).Encode(map[string]int{\"count\": count})\n90: }\n",
+			"line": "89",
+			"column": "2",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "LOW",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "703",
+				"url": "https://cwe.mitre.org/data/definitions/703.html"
+			},
+			"rule_id": "G104",
+			"details": "Errors unhandled",
+			"file": "C:\\Users\\julie\\Downloads\\SistemaGestionConsentimiento\\backend\\handlers\\notifications.go",
+			"code": "63: \tw.Header().Set(\"Content-Type\", \"application/json\")\n64: \tjson.NewEncoder(w).Encode(notifs)\n65: }\n",
+			"line": "64",
+			"column": "2",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "LOW",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "703",
+				"url": "https://cwe.mitre.org/data/definitions/703.html"
+			},
+			"rule_id": "G104",
+			"details": "Errors unhandled",
+			"file": "C:\\Users\\julie\\Downloads\\SistemaGestionConsentimiento\\backend\\handlers\\monitoreo.go",
+			"code": "80: \tw.Header().Set(\"Content-Type\", \"application/json\")\n81: \tjson.NewEncoder(w).Encode(lista)\n82: }\n",
+			"line": "81",
+			"column": "2",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "LOW",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "703",
+				"url": "https://cwe.mitre.org/data/definitions/703.html"
+			},
+			"rule_id": "G104",
+			"details": "Errors unhandled",
+			"file": "C:\\Users\\julie\\Downloads\\SistemaGestionConsentimiento\\backend\\handlers\\login.go",
+			"code": "95: \tw.Header().Set(\"Content-Type\", \"application/json\")\n96: \tjson.NewEncoder(w).Encode(map[string]interface{}{\n97: \t\t\"mensaje\":    \"Inicio de sesión exitoso\",\n98: \t\t\"id_usuario\": userID,\n99: \t\t\"id_rol\":     idRol,\n100: \t})\n101: }\n",
+			"line": "96-100",
+			"column": "2",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "LOW",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "703",
+				"url": "https://cwe.mitre.org/data/definitions/703.html"
+			},
+			"rule_id": "G104",
+			"details": "Errors unhandled",
+			"file": "C:\\Users\\julie\\Downloads\\SistemaGestionConsentimiento\\backend\\handlers\\fallos.go",
+			"code": "104: \tw.Header().Set(\"Content-Type\", \"application/json\")\n105: \tjson.NewEncoder(w).Encode(resp)\n106: }\n",
+			"line": "105",
+			"column": "2",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "LOW",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "703",
+				"url": "https://cwe.mitre.org/data/definitions/703.html"
+			},
+			"rule_id": "G104",
+			"details": "Errors unhandled",
+			"file": "C:\\Users\\julie\\Downloads\\SistemaGestionConsentimiento\\backend\\handlers\\datos_personales.go",
+			"code": "480: \tw.Header().Set(\"Content-Type\", \"application/json\")\n481: \tjson.NewEncoder(w).Encode(map[string]string{\n482: \t\t\"mensaje\": \"Datos personales eliminados correctamente\",\n483: \t})\n484: }\n",
+			"line": "481-483",
+			"column": "2",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "LOW",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "703",
+				"url": "https://cwe.mitre.org/data/definitions/703.html"
+			},
+			"rule_id": "G104",
+			"details": "Errors unhandled",
+			"file": "C:\\Users\\julie\\Downloads\\SistemaGestionConsentimiento\\backend\\handlers\\datos_personales.go",
+			"code": "450: \tw.WriteHeader(http.StatusOK)\n451: \tjson.NewEncoder(w).Encode(map[string]string{\n452: \t\t\"mensaje\":  \"Datos personales actualizados correctamente\",\n453: \t\t\"politica\": politica,\n454: \t})\n455: }\n",
+			"line": "451-454",
+			"column": "2",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "LOW",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "703",
+				"url": "https://cwe.mitre.org/data/definitions/703.html"
+			},
+			"rule_id": "G104",
+			"details": "Errors unhandled",
+			"file": "C:\\Users\\julie\\Downloads\\SistemaGestionConsentimiento\\backend\\handlers\\datos_personales.go",
+			"code": "350: \tw.Header().Set(\"Content-Type\", \"application/json\")\n351: \tjson.NewEncoder(w).Encode(resp)\n352: }\n",
+			"line": "351",
+			"column": "2",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "LOW",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "703",
+				"url": "https://cwe.mitre.org/data/definitions/703.html"
+			},
+			"rule_id": "G104",
+			"details": "Errors unhandled",
+			"file": "C:\\Users\\julie\\Downloads\\SistemaGestionConsentimiento\\backend\\handlers\\datos_personales.go",
+			"code": "225: \tw.WriteHeader(http.StatusOK)\n226: \tjson.NewEncoder(w).Encode(map[string]string{\n227: \t\t\"mensaje\":  \"Datos personales cifrados correctamente\",\n228: \t\t\"politica\": politica,\n229: \t})\n230: }\n",
+			"line": "226-229",
+			"column": "2",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "LOW",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "703",
+				"url": "https://cwe.mitre.org/data/definitions/703.html"
+			},
+			"rule_id": "G104",
+			"details": "Errors unhandled",
+			"file": "C:\\Users\\julie\\Downloads\\SistemaGestionConsentimiento\\backend\\handlers\\dashboard_procesador.go",
+			"code": "113: \tw.Header().Set(\"Content-Type\", \"application/json\")\n114: \tjson.NewEncoder(w).Encode(resp)\n115: }\n",
+			"line": "114",
+			"column": "2",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "LOW",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "703",
+				"url": "https://cwe.mitre.org/data/definitions/703.html"
+			},
+			"rule_id": "G104",
+			"details": "Errors unhandled",
+			"file": "C:\\Users\\julie\\Downloads\\SistemaGestionConsentimiento\\backend\\handlers\\dashboard_custodio.go",
+			"code": "85: \tw.Header().Set(\"Content-Type\", \"application/json\")\n86: \tjson.NewEncoder(w).Encode(resp)\n87: }\n",
+			"line": "86",
+			"column": "2",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "LOW",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "703",
+				"url": "https://cwe.mitre.org/data/definitions/703.html"
+			},
+			"rule_id": "G104",
+			"details": "Errors unhandled",
+			"file": "C:\\Users\\julie\\Downloads\\SistemaGestionConsentimiento\\backend\\handlers\\dashboard.go",
+			"code": "103: \tw.Header().Set(\"Content-Type\", \"application/json\")\n104: \tjson.NewEncoder(w).Encode(resp)\n105: }\n",
+			"line": "104",
+			"column": "2",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "LOW",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "703",
+				"url": "https://cwe.mitre.org/data/definitions/703.html"
+			},
+			"rule_id": "G104",
+			"details": "Errors unhandled",
+			"file": "C:\\Users\\julie\\Downloads\\SistemaGestionConsentimiento\\backend\\handlers\\custodio_consentimiento.go",
+			"code": "72: \tw.Header().Set(\"Content-Type\", \"application/json\")\n73: \tjson.NewEncoder(w).Encode(lista)\n74: }\n",
+			"line": "73",
+			"column": "2",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "LOW",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "703",
+				"url": "https://cwe.mitre.org/data/definitions/703.html"
+			},
+			"rule_id": "G104",
+			"details": "Errors unhandled",
+			"file": "C:\\Users\\julie\\Downloads\\SistemaGestionConsentimiento\\backend\\handlers\\consentimientos.go",
+			"code": "512: \tw.Header().Set(\"Content-Type\", \"application/json\")\n513: \tjson.NewEncoder(w).Encode(map[string]string{\"mensaje\": \"Consentimiento eliminado correctamente\"})\n514: }\n",
+			"line": "513",
+			"column": "2",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "LOW",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "703",
+				"url": "https://cwe.mitre.org/data/definitions/703.html"
+			},
+			"rule_id": "G104",
+			"details": "Errors unhandled",
+			"file": "C:\\Users\\julie\\Downloads\\SistemaGestionConsentimiento\\backend\\handlers\\consentimientos.go",
+			"code": "416: \tw.Header().Set(\"Content-Type\", \"application/json\")\n417: \tjson.NewEncoder(w).Encode(map[string]string{\n418: \t\t\"mensaje\": \"Se ha programado la revocación para dentro de 24 horas\",\n419: \t})\n420: }\n",
+			"line": "417-419",
+			"column": "2",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "LOW",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "703",
+				"url": "https://cwe.mitre.org/data/definitions/703.html"
+			},
+			"rule_id": "G104",
+			"details": "Errors unhandled",
+			"file": "C:\\Users\\julie\\Downloads\\SistemaGestionConsentimiento\\backend\\handlers\\consentimientos.go",
+			"code": "306: \tw.Header().Set(\"Content-Type\", \"application/json\")\n307: \tjson.NewEncoder(w).Encode(map[string]string{\"mensaje\": \"Consentimiento actualizado correctamente\"})\n308: }\n",
+			"line": "307",
+			"column": "2",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "LOW",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "703",
+				"url": "https://cwe.mitre.org/data/definitions/703.html"
+			},
+			"rule_id": "G104",
+			"details": "Errors unhandled",
+			"file": "C:\\Users\\julie\\Downloads\\SistemaGestionConsentimiento\\backend\\handlers\\consentimientos.go",
+			"code": "279: \tw.Header().Set(\"Content-Type\", \"application/json\")\n280: \tjson.NewEncoder(w).Encode(lista)\n281: }\n",
+			"line": "280",
+			"column": "2",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "LOW",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "703",
+				"url": "https://cwe.mitre.org/data/definitions/703.html"
+			},
+			"rule_id": "G104",
+			"details": "Errors unhandled",
+			"file": "C:\\Users\\julie\\Downloads\\SistemaGestionConsentimiento\\backend\\handlers\\consentimientos.go",
+			"code": "247: \t\terrMsg := fmt.Sprintf(\"Error consultando consentimientos: %v\", err)\n248: \t\tdb.Pool.Exec(context.Background(), `\n249: \t\t\tINSERT INTO auditoria_eventos\n250: \t\t\t  (id_usuario, accion, tabla_afectada, descripcion, fecha_evento, exito, error_mensaje)\n251: \t\t\tVALUES ($1, 'FALLO-QUERY', 'consentimientos', $2, NOW(), false, $3)\n252: \t\t`, idUsr, errMsg, errMsg)\n253: \n",
+			"line": "248-252",
+			"column": "3",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "LOW",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "703",
+				"url": "https://cwe.mitre.org/data/definitions/703.html"
+			},
+			"rule_id": "G104",
+			"details": "Errors unhandled",
+			"file": "C:\\Users\\julie\\Downloads\\SistemaGestionConsentimiento\\backend\\handlers\\consentimientos.go",
+			"code": "215: \tw.WriteHeader(http.StatusOK)\n216: \tjson.NewEncoder(w).Encode(map[string]string{\"mensaje\": \"Política rechazada correctamente\"})\n217: }\n",
+			"line": "216",
+			"column": "2",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "LOW",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "703",
+				"url": "https://cwe.mitre.org/data/definitions/703.html"
+			},
+			"rule_id": "G104",
+			"details": "Errors unhandled",
+			"file": "C:\\Users\\julie\\Downloads\\SistemaGestionConsentimiento\\backend\\handlers\\consentimientos.go",
+			"code": "155: \tw.WriteHeader(http.StatusCreated)\n156: \tjson.NewEncoder(w).Encode(map[string]string{\"mensaje\": \"Consentimiento registrado correctamente\"})\n157: }\n",
+			"line": "156",
+			"column": "2",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "LOW",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "703",
+				"url": "https://cwe.mitre.org/data/definitions/703.html"
+			},
+			"rule_id": "G104",
+			"details": "Errors unhandled",
+			"file": "C:\\Users\\julie\\Downloads\\SistemaGestionConsentimiento\\backend\\handlers\\consentimientos.go",
+			"code": "131: \tif err != nil {\n132: \t\tdb.Pool.Exec(ctx, `\n133: \t\t\tINSERT INTO auditoria_eventos\n134: \t\t\t  (id_usuario, accion, tabla_afectada, descripcion, fecha_evento, exito, error_mensaje)\n135: \t\t\tVALUES ($1, 'FALLO-INSERT', 'consentimientos', $2, NOW(), false, $3)\n136: \t\t`, in.IDUsuario, err.Error(), err.Error())\n137: \n",
+			"line": "132-136",
+			"column": "3",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "LOW",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "703",
+				"url": "https://cwe.mitre.org/data/definitions/703.html"
+			},
+			"rule_id": "G104",
+			"details": "Errors unhandled",
+			"file": "C:\\Users\\julie\\Downloads\\SistemaGestionConsentimiento\\backend\\handlers\\consentimientos.go",
+			"code": "116: \t\t\t\tw.WriteHeader(http.StatusOK)\n117: \t\t\t\tjson.NewEncoder(w).Encode(map[string]string{\"mensaje\": \"Política rechazada correctamente\"})\n118: \t\t\t\treturn\n",
+			"line": "117",
+			"column": "5",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "LOW",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "703",
+				"url": "https://cwe.mitre.org/data/definitions/703.html"
+			},
+			"rule_id": "G104",
+			"details": "Errors unhandled",
+			"file": "C:\\Users\\julie\\Downloads\\SistemaGestionConsentimiento\\backend\\handlers\\consentimientos.go",
+			"code": "52: \t\t\terrMsg := fmt.Sprintf(\"Fecha_expiracion excede fecha_fin para politica=%d\", in.IDPolitica)\n53: \t\t\tdb.Pool.Exec(ctx, `\n54: \t\t\t\tINSERT INTO auditoria_eventos\n55: \t\t\t\t  (id_usuario, accion, tabla_afectada, descripcion, fecha_evento, exito, error_mensaje)\n56: \t\t\t\tVALUES ($1, 'FALLO-INSERT', 'consentimientos', $2, NOW(), false, $3)\n57: \t\t\t`, in.IDUsuario, errMsg, errMsg)\n58: \n",
+			"line": "53-57",
+			"column": "4",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "LOW",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "703",
+				"url": "https://cwe.mitre.org/data/definitions/703.html"
+			},
+			"rule_id": "G104",
+			"details": "Errors unhandled",
+			"file": "C:\\Users\\julie\\Downloads\\SistemaGestionConsentimiento\\backend\\handlers\\auth.go",
+			"code": "121: \tw.Header().Set(\"Content-Type\", \"application/json\")\n122: \tjson.NewEncoder(w).Encode(lista)\n123: }\n",
+			"line": "122",
+			"column": "2",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "LOW",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "703",
+				"url": "https://cwe.mitre.org/data/definitions/703.html"
+			},
+			"rule_id": "G104",
+			"details": "Errors unhandled",
+			"file": "C:\\Users\\julie\\Downloads\\SistemaGestionConsentimiento\\backend\\handlers\\auth.go",
+			"code": "86: \tw.WriteHeader(http.StatusCreated)\n87: \tjson.NewEncoder(w).Encode(map[string]interface{}{\n88: \t\t\"mensaje\":    \"Usuario registrado correctamente\",\n89: \t\t\"id_usuario\": userID,\n90: \t})\n91: }\n",
+			"line": "87-90",
+			"column": "2",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "LOW",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "703",
+				"url": "https://cwe.mitre.org/data/definitions/703.html"
+			},
+			"rule_id": "G104",
+			"details": "Errors unhandled",
+			"file": "C:\\Users\\julie\\Downloads\\SistemaGestionConsentimiento\\backend\\handlers\\atributos_terceros.go",
+			"code": "202: \n203: \tjson.NewEncoder(w).Encode(map[string]string{\n204: \t\t\"mensaje\": \"Atributos eliminados correctamente\",\n205: \t})\n206: }\n",
+			"line": "203-205",
+			"column": "2",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "LOW",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "703",
+				"url": "https://cwe.mitre.org/data/definitions/703.html"
+			},
+			"rule_id": "G104",
+			"details": "Errors unhandled",
+			"file": "C:\\Users\\julie\\Downloads\\SistemaGestionConsentimiento\\backend\\handlers\\atributos_terceros.go",
+			"code": "170: \n171: \tjson.NewEncoder(w).Encode(map[string]string{\n172: \t\t\"mensaje\": \"Atributos actualizados correctamente\",\n173: \t})\n174: }\n",
+			"line": "171-173",
+			"column": "2",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "LOW",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "703",
+				"url": "https://cwe.mitre.org/data/definitions/703.html"
+			},
+			"rule_id": "G104",
+			"details": "Errors unhandled",
+			"file": "C:\\Users\\julie\\Downloads\\SistemaGestionConsentimiento\\backend\\handlers\\atributos_terceros.go",
+			"code": "138: \tw.Header().Set(\"Content-Type\", \"application/json\")\n139: \tjson.NewEncoder(w).Encode(map[string]interface{}{\n140: \t\t\"id_usuario\": id,\n141: \t\t\"nombre\":     nombre,\n142: \t})\n143: }\n",
+			"line": "139-142",
+			"column": "2",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "LOW",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "703",
+				"url": "https://cwe.mitre.org/data/definitions/703.html"
+			},
+			"rule_id": "G104",
+			"details": "Errors unhandled",
+			"file": "C:\\Users\\julie\\Downloads\\SistemaGestionConsentimiento\\backend\\handlers\\atributos_terceros.go",
+			"code": "110: \tw.Header().Set(\"Content-Type\", \"application/json\")\n111: \tjson.NewEncoder(w).Encode(map[string]interface{}{\n112: \t\t\"atributos\": atributos,\n113: \t})\n114: }\n",
+			"line": "111-113",
+			"column": "2",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "LOW",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "703",
+				"url": "https://cwe.mitre.org/data/definitions/703.html"
+			},
+			"rule_id": "G104",
+			"details": "Errors unhandled",
+			"file": "C:\\Users\\julie\\Downloads\\SistemaGestionConsentimiento\\backend\\handlers\\atributos_terceros.go",
+			"code": "76: \n77: \tjson.NewEncoder(w).Encode(map[string]interface{}{\n78: \t\t\"atributo\": atributo,\n79: \t\t\"acceso\":   existe,\n80: \t})\n81: }\n",
+			"line": "77-80",
+			"column": "2",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "LOW",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "703",
+				"url": "https://cwe.mitre.org/data/definitions/703.html"
+			},
+			"rule_id": "G104",
+			"details": "Errors unhandled",
+			"file": "C:\\Users\\julie\\Downloads\\SistemaGestionConsentimiento\\backend\\handlers\\atributos_terceros.go",
+			"code": "43: \tw.WriteHeader(http.StatusCreated)\n44: \tjson.NewEncoder(w).Encode(map[string]string{\n45: \t\t\"mensaje\": \"Atributos asignados correctamente\",\n46: \t})\n47: }\n",
+			"line": "44-46",
+			"column": "2",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "LOW",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "703",
+				"url": "https://cwe.mitre.org/data/definitions/703.html"
+			},
+			"rule_id": "G104",
+			"details": "Errors unhandled",
+			"file": "C:\\Users\\julie\\Downloads\\SistemaGestionConsentimiento\\backend\\handlers\\asignar_rol.go",
+			"code": "285: \tw.Header().Set(\"Content-Type\", \"application/json\")\n286: \tjson.NewEncoder(w).Encode(lista)\n287: }\n",
+			"line": "286",
+			"column": "2",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "LOW",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "703",
+				"url": "https://cwe.mitre.org/data/definitions/703.html"
+			},
+			"rule_id": "G104",
+			"details": "Errors unhandled",
+			"file": "C:\\Users\\julie\\Downloads\\SistemaGestionConsentimiento\\backend\\handlers\\asignar_rol.go",
+			"code": "235: \tw.Header().Set(\"Content-Type\", \"application/json\")\n236: \tjson.NewEncoder(w).Encode(usuarios)\n237: }\n",
+			"line": "236",
+			"column": "2",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "LOW",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "703",
+				"url": "https://cwe.mitre.org/data/definitions/703.html"
+			},
+			"rule_id": "G104",
+			"details": "Errors unhandled",
+			"file": "C:\\Users\\julie\\Downloads\\SistemaGestionConsentimiento\\backend\\handlers\\asignar_rol.go",
+			"code": "201: \tw.Header().Set(\"Content-Type\", \"application/json\")\n202: \tjson.NewEncoder(w).Encode(list)\n203: }\n",
+			"line": "202",
+			"column": "2",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "LOW",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "703",
+				"url": "https://cwe.mitre.org/data/definitions/703.html"
+			},
+			"rule_id": "G104",
+			"details": "Errors unhandled",
+			"file": "C:\\Users\\julie\\Downloads\\SistemaGestionConsentimiento\\backend\\handlers\\asignar_rol.go",
+			"code": "164: \tw.Header().Set(\"Content-Type\", \"application/json\")\n165: \tjson.NewEncoder(w).Encode(map[string]string{\"mensaje\": \"Rol revocado correctamente\"})\n166: }\n",
+			"line": "165",
+			"column": "2",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "LOW",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "703",
+				"url": "https://cwe.mitre.org/data/definitions/703.html"
+			},
+			"rule_id": "G104",
+			"details": "Errors unhandled",
+			"file": "C:\\Users\\julie\\Downloads\\SistemaGestionConsentimiento\\backend\\handlers\\asignar_rol.go",
+			"code": "135: \tw.Header().Set(\"Content-Type\", \"application/json\")\n136: \tjson.NewEncoder(w).Encode(resultado)\n137: }\n",
+			"line": "136",
+			"column": "2",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "LOW",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "703",
+				"url": "https://cwe.mitre.org/data/definitions/703.html"
+			},
+			"rule_id": "G104",
+			"details": "Errors unhandled",
+			"file": "C:\\Users\\julie\\Downloads\\SistemaGestionConsentimiento\\backend\\handlers\\asignar_rol.go",
+			"code": "86: \tw.Header().Set(\"Content-Type\", \"application/json\")\n87: \tjson.NewEncoder(w).Encode(map[string]string{\"mensaje\": \"Rol asignado correctamente\"})\n88: }\n",
+			"line": "87",
+			"column": "2",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "LOW",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "703",
+				"url": "https://cwe.mitre.org/data/definitions/703.html"
+			},
+			"rule_id": "G104",
+			"details": "Errors unhandled",
+			"file": "C:\\Users\\julie\\Downloads\\SistemaGestionConsentimiento\\backend\\handlers\\asignar_rol.go",
+			"code": "61: \tw.Header().Set(\"Content-Type\", \"application/json\")\n62: \tjson.NewEncoder(w).Encode(lista)\n63: }\n",
+			"line": "62",
+			"column": "2",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "LOW",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "703",
+				"url": "https://cwe.mitre.org/data/definitions/703.html"
+			},
+			"rule_id": "G104",
+			"details": "Errors unhandled",
+			"file": "C:\\Users\\julie\\Downloads\\SistemaGestionConsentimiento\\backend\\handlers\\apd_handlers.go",
+			"code": "230: \tw.Header().Set(\"Content-Type\", \"application/json\")\n231: \tjson.NewEncoder(w).Encode(hist)\n232: }\n",
+			"line": "231",
+			"column": "2",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "LOW",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "703",
+				"url": "https://cwe.mitre.org/data/definitions/703.html"
+			},
+			"rule_id": "G104",
+			"details": "Errors unhandled",
+			"file": "C:\\Users\\julie\\Downloads\\SistemaGestionConsentimiento\\backend\\handlers\\apd_handlers.go",
+			"code": "189: \tw.Header().Set(\"Content-Type\", \"application/json\")\n190: \tjson.NewEncoder(w).Encode(list)\n191: }\n",
+			"line": "190",
+			"column": "2",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "LOW",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "703",
+				"url": "https://cwe.mitre.org/data/definitions/703.html"
+			},
+			"rule_id": "G104",
+			"details": "Errors unhandled",
+			"file": "C:\\Users\\julie\\Downloads\\SistemaGestionConsentimiento\\backend\\handlers\\apd_handlers.go",
+			"code": "143: \tw.Header().Set(\"Content-Type\", \"application/json\")\n144: \tjson.NewEncoder(w).Encode(hist)\n145: }\n",
+			"line": "144",
+			"column": "2",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "LOW",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "703",
+				"url": "https://cwe.mitre.org/data/definitions/703.html"
+			},
+			"rule_id": "G104",
+			"details": "Errors unhandled",
+			"file": "C:\\Users\\julie\\Downloads\\SistemaGestionConsentimiento\\backend\\handlers\\apd_handlers.go",
+			"code": "95: \tw.Header().Set(\"Content-Type\", \"application/json\")\n96: \tjson.NewEncoder(w).Encode(list)\n97: }\n",
+			"line": "96",
+			"column": "2",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "LOW",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "703",
+				"url": "https://cwe.mitre.org/data/definitions/703.html"
+			},
+			"rule_id": "G104",
+			"details": "Errors unhandled",
+			"file": "C:\\Users\\julie\\Downloads\\SistemaGestionConsentimiento\\backend\\handlers\\accesos.go",
+			"code": "119: \tw.Header().Set(\"Content-Type\", \"application/json\")\n120: \tjson.NewEncoder(w).Encode(lista)\n121: }\n",
+			"line": "120",
+			"column": "2",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "LOW",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "703",
+				"url": "https://cwe.mitre.org/data/definitions/703.html"
+			},
+			"rule_id": "G104",
+			"details": "Errors unhandled",
+			"file": "C:\\Users\\julie\\Downloads\\SistemaGestionConsentimiento\\backend\\handlers\\accesos.go",
+			"code": "70: \tw.Header().Set(\"Content-Type\", \"application/json\")\n71: \tjson.NewEncoder(w).Encode(lista)\n72: }\n",
+			"line": "71",
+			"column": "2",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "LOW",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "703",
+				"url": "https://cwe.mitre.org/data/definitions/703.html"
+			},
+			"rule_id": "G104",
+			"details": "Errors unhandled",
+			"file": "C:\\Users\\julie\\Downloads\\SistemaGestionConsentimiento\\backend\\handlers\\accedo_datos.go",
+			"code": "232: \tw.Header().Set(\"Content-Type\", \"application/json\")\n233: \tjson.NewEncoder(w).Encode(lista)\n234: }\n",
+			"line": "233",
+			"column": "2",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "LOW",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "703",
+				"url": "https://cwe.mitre.org/data/definitions/703.html"
+			},
+			"rule_id": "G104",
+			"details": "Errors unhandled",
+			"file": "C:\\Users\\julie\\Downloads\\SistemaGestionConsentimiento\\backend\\handlers\\accedo_datos.go",
+			"code": "191: \tw.Header().Set(\"Content-Type\", \"application/json\")\n192: \tjson.NewEncoder(w).Encode(respuesta)\n193: }\n",
+			"line": "192",
+			"column": "2",
+			"nosec": false,
+			"suppressions": null
+		}
+	],
+	"Stats": {
+		"files": 38,
+		"lines": 5577,
+		"nosec": 0,
+		"found": 71
+	},
+	"GosecVersion": "dev"
+}
